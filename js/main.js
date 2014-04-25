@@ -1,12 +1,12 @@
 
-function buildGrid(width, height){
+function buildGrid(rows, cols){
 	var grid = document.getElementById('grid');
-	for(var i = 0; i < width; i++){
+	for(var i = 0; i < rows; i++){
 		var newRow = document.createElement('div');
 	    newRow.setAttribute('class','row clearfix');
-		for(var j = 0; j < height; j++){
+		for(var j = 0; j < cols; j++){
 	    	var newCell = document.createElement('div');
-	    	newCell.setAttribute('class','cell');
+	    	newCell.setAttribute('class','cell cell-' + i + '-' + j);
 	    	newCell.innerHTML = i*4 + j + 1;
 	    	newRow.appendChild(newCell);
 	    }
@@ -15,4 +15,4 @@ function buildGrid(width, height){
 };
 
 
-buildGrid(conf.grid.width, conf.grid.height);
+buildGrid(conf.grid.rows, conf.grid.cols);

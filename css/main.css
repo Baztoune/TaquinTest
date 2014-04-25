@@ -1,7 +1,14 @@
 /*
- * 0 - Utils
+ * 0 - Reset style
  */
+*, *:before, *:after {
+  -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
+ }
 
+
+/*
+ * 1 - Utils
+ */
 .clearfix:before,
 .clearfix:after {
     content: " "; /* 1 */
@@ -15,12 +22,70 @@
 
 
 /*
- * 1 - Game
+ * 2 - Global
  */
-
-.cell{
+.container {
+	width: 400px;
+	margin: 0 auto;
+}
+.cell {
 	width:100px;
 	height:100px;
 	float : left;
 	border:1px solid gray;
+}
+.row {
+}
+
+
+/*
+ * 3 - image tiles
+ */
+.cell-0-0 {
+	background: url('../img/html5-400x400.png') no-repeat 0px 0px;
+}
+.cell-0-1 {
+	background: url('../img/html5-400x400.png') no-repeat -100px 0px;
+}
+.cell-0-2 {
+	background: url('../img/html5-400x400.png') no-repeat -200px 0px;
+}
+.cell-0-3 {
+	background: url('../img/html5-400x400.png') no-repeat -300px 0px;
+}
+.cell-1-0 {
+	background: url('../img/html5-400x400.png') no-repeat 0px -100px;
+}
+.cell-1-1 {
+	background: url('../img/html5-400x400.png') no-repeat -100px -100px;
+}
+.cell-1-2 {
+	background: url('../img/html5-400x400.png') no-repeat -200px -100px;
+}
+.cell-1-3 {
+	background: url('../img/html5-400x400.png') no-repeat -300px -100px;
+}
+.cell-2-0 {
+	background: url('../img/html5-400x400.png') no-repeat 0px -200px;
+}
+.cell-2-1 {
+	background: url('../img/html5-400x400.png') no-repeat -100px -200px;
+}
+.cell-2-2 {
+	background: url('../img/html5-400x400.png') no-repeat -200px -200px;
+}
+.cell-2-3 {
+	background: url('../img/html5-400x400.png') no-repeat -300px -200px;
+}
+.cell-3-0 {
+	background: url('../img/html5-400x400.png') no-repeat 0px -300px;
+}
+.cell-3-1 {
+	background: url('../img/html5-400x400.png') no-repeat -100px -300px;
+}
+.cell-3-2 {
+	background: url('../img/html5-400x400.png') no-repeat -200px -300px;
+}
+.cell-3-3 {
+	background: url('../img/html5-400x400.png') no-repeat -300px -300px;
 }
