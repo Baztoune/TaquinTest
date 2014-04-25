@@ -1,9 +1,3 @@
-var conf = {
-	grid : {
-		width : 4,
-		height : 4
-	}
-};
 
 function buildGrid(width, height){
 	var grid = document.getElementById('grid');

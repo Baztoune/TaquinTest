@@ -1,0 +1,6 @@
+var conf = {
+	grid : {
+		width : 4,
+		height : 4
+	}
+};
