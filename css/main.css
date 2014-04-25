@@ -39,6 +39,9 @@
 .tile{
 	height:100%;
 }
+.over{
+	border:2px dashed black;
+}
 
 
 /*
