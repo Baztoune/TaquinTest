@@ -1,0 +1,26 @@
+/*
+ * 0 - Utils
+ */
+
+.clearfix:before,
+.clearfix:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+
+
+/*
+ * 1 - Game
+ */
+
+.cell{
+	width:100px;
+	height:100px;
+	float : left;
+	border:1px solid gray;
+}
