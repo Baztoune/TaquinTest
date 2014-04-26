@@ -84,7 +84,7 @@ Game.prototype.attachDragEventsOnDraggableElement = function attachDragEventsOnD
 	var game = this;
 	el.addEventListener('dragstart', function(e) {
 		// pass the id, so we can get the element on drop
-    	e.dataTransfer.setData('tileId', this.id);
+    	e.dataTransfer.setData('Text', this.id);
     	game.draggedTile = this.tileObject;
 	}, false);
 	el.addEventListener('dragenter', function(e) {
