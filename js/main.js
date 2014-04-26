@@ -1,31 +1,34 @@
-function Game(){
+function Game() {
 	this.grid = new Grid(conf.rows, conf.cols);
+	var draggedTile = null;
 }
-function Grid(rows, cols){
+function Grid(rows, cols) {
 	this.cells = [];
 
 	for (var i = 0; i < rows; i++) {
 		var row = [];
 		for (var j = 0; j < cols; j++) {
 			var cell = new Cell(i, j);
-			if(!cell.isLast()){
+			if(!cell.isLast()) {
 				// except last cell
-				cell.tile = new Tile();
+				cell.tile = new Tile(cell);
 			}
 			row.push(cell);
 		}
 		this.cells.push(row);
 	}
 }
-function Cell(x, y){
+function Cell(x, y) {
 	var tile;
 	this.x = x;
 	this.y = y;
 }
-function Tile(){
+function Tile(cell) {
+	this.cell = cell;
 }
 
-Game.prototype.init = function init(){
+Game.prototype.init = function init() {
+	console.debug('starting the game');
 	this.updateView();
 };
 
@@ -36,28 +39,31 @@ Game.prototype.detectGameEnd = function detectGameEnd() {
 /*
  * Build the html from the JS model
  */
-Game.prototype.updateView = function updateView(){
+Game.prototype.updateView = function updateView() {
 	var game = this;
 	var cells = game.grid.cells;
 
 	var grid = document.getElementById('grid');
-	cells.forEach(function(col){
+	cells.forEach(function(col) {
 		var newRow = document.createElement('div');
 		newRow.classList.add('row', 'clearfix');
-		col.forEach(function(cell){
+		col.forEach(function(cell) {
 			/* Build cell */
 			var newCell = document.createElement('div');
 			newCell.classList.add('cell');
+			newCell.id='cell-' + cell.x + '-' + cell.y;
+			newCell.cellObject=cell;
 			newRow.appendChild(newCell);
 			game.attachDragEventsOnDroppableElement(newCell);
 
 			/* Build tile */
-			if(cell.tile){
+			if(cell.tile) {
 				var newTile = document.createElement('div');
 				newTile.innerHTML = cell.x * 4 + cell.y + 1;
 				newTile.classList.add('tile');
 				newTile.id='tile-' + cell.x + '-' + cell.y;
 				newTile.setAttribute('draggable', 'true');
+				newTile.tileObject=cell.tile;
 
 				newCell.appendChild(newTile);
 
@@ -69,11 +75,16 @@ Game.prototype.updateView = function updateView(){
 }
 
 Game.prototype.attachDragEventsOnDraggableElement = function attachDragEventsOnDraggableElement(el) {
+	var game = this;
 	el.addEventListener('dragstart', function(e) {
 		// pass the id, so we can get the element on drop
     	e.dataTransfer.setData('tileId', this.id);
-	});
-}
+    	game.draggedTile = this.tileObject;
+	}, false);
+	el.addEventListener('dragenter', function(e) {
+		e.stopPropagation();
+	}, false);
+};
 
 Game.prototype.attachDragEventsOnDroppableElement = function attachDragEventsOnDroppableElement(el) {
 	var game = this; // cache before event handlers override it
@@ -82,7 +93,12 @@ Game.prototype.attachDragEventsOnDroppableElement = function attachDragEventsOnD
 		if (e.preventDefault) {
 			e.preventDefault();
 		}
-		this.classList.add('over');
+		var dstCell = this.cellObject;
+
+		if(dstCell.acceptDrop(game.draggedTile)) {
+			this.classList.add('accept-drop');
+		}
+
 		return false;
 	}, false);
 	el.addEventListener('dragover', function(e) {
@@ -95,17 +111,21 @@ Game.prototype.attachDragEventsOnDroppableElement = function attachDragEventsOnD
 		if (e.preventDefault) {
 			e.preventDefault();
 		}
-		this.classList.remove('over');
+		this.classList.remove('accept-drop');
 		return false;
 	}, false);
 	el.addEventListener('drop', function(e) {
-	    if (event.preventDefault) {
-	    	event.preventDefault();
+	    if (e.preventDefault) {
+	    	e.preventDefault();
 	    }
-		this.classList.remove('over');
-		var tile = document.getElementById(e.dataTransfer.getData('tileId'));
-		game.moveTile(tile,this);
-		
+
+		if(this.cellObject.acceptDrop(game.draggedTile)) {
+			game.draggedTile.moveTo(this.cellObject);
+		}
+
+		this.classList.remove('accept-drop');
+		game.draggedTile=null;
+
 		return false;
 	}, false);
 };
@@ -120,9 +140,9 @@ Game.prototype.moveTile = function moveTile(el, dest) {
 
 Grid.prototype.getEmptyCell = function getEmptyCell() {
 	var emptyCell;
-	this.cells.forEach(function(col){
-		col.forEach(function(cell){
-			if(cell.isEmpty()){
+	this.cells.forEach(function(col) {
+		col.forEach(function(cell) {
+			if(cell.isEmpty()) {
 				emptyCell = cell;
 			}
 		});
@@ -130,23 +150,59 @@ Grid.prototype.getEmptyCell = function getEmptyCell() {
 	return emptyCell;
 };
 
-Cell.prototype.isLast = function isLast(){
-	if(this.x + 1 == conf.rows && this.y + 1 == conf.cols){
+Cell.prototype.isLast = function isLast() {
+	if(this.x + 1 == conf.rows && this.y + 1 == conf.cols) {
 		return true;
 	}
 };
-Cell.prototype.isEmpty = function isEmpty(){
-	if(!this.tile){
+Cell.prototype.acceptDrop = function acceptDrop(tile) {
+	var dstCell = this;
+	var srcCell = tile.cell;
+
+	if(dstCell.isAdjacentTo(srcCell) && dstCell.isEmpty()) {
+		console.debug('yep, can drop');
 		return true;
 	}
+	console.debug(dstCell.isAdjacentTo(srcCell));
+	console.debug(dstCell.isEmpty());
+	console.debug('nop, can\'t drop');
+	return false;
 };
-Cell.prototype.isAdjacentTo = function isAdjacentTo(otherCell){
-	var sameRow = cell.y==otherCell.y;
-	var sameCol = cell.x==otherCell.x;
-	if(sameRow && Math.abs(cell.x-otherCell.x)==1
-		|| sameCol && Math.abs(cell.y-otherCell.y)==1){
+Cell.prototype.isEmpty = function isEmpty() {
+	if(!this.tile) {
 		return true;
 	}
+	return false;
+};
+Cell.prototype.isAdjacentTo = function isAdjacentTo(otherCell) {
+	var sameRow = this.y==otherCell.y;
+	var sameCol = this.x==otherCell.x;
+	if(sameRow && Math.abs(this.x-otherCell.x)==1
+		|| sameCol && Math.abs(this.y-otherCell.y)==1) {
+		return true;
+	}
+	return false;
+};
+
+Cell.prototype.getDomElement = function getDomElement() {
+	var elt = document.getElementById('cell-'+this.x+'-'+this.y);
+	return elt;
+};
+Cell.prototype.clear = function clear() {
+	this.tile=null;
+};
+
+Tile.prototype.getDomElement = function getDomElement() {
+	return this.cell.getDomElement().firstChild;
+};
+
+Tile.prototype.moveTo = function moveTo(cell) {
+	console.debug('tile will be moved from ',this.cell);
+	cell.getDomElement().appendChild(this.getDomElement());
+	this.cell.clear();
+	this.cell=cell;
+	this.cell.tile=this;
+	console.debug('tile moved to',this.cell );
 };
 
 /* Anonymous init function */
