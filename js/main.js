@@ -78,10 +78,9 @@ function moveTile(el, dest) {
 function findEmptyCell() {
 	var cells = document.getElementsByClassName('cell');	
 	for (var i = 0, len = cells.length; i < len; i++) {
-		cells[i].removeAttribute('accept-drop');
+		cells[i].classList.remove('accept-drop');
 		if(!cells[i].firstChild){
-			//empty
-			console.log('cell empty', cells[i]);
+			//empty cell, can accept drop
 			cells[i].classList.add('accept-drop');
 		}
 	}
