@@ -40,7 +40,7 @@
 	height:100%;
 	cursor:move;
 }
-.over{
+.over.accept-drop{
 	border:2px dashed black;
 }
 

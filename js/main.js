@@ -30,6 +30,7 @@ function buildGrid(rows, cols) {
 
 function attachDragEventsOnDraggableElement(el) {
 	el.addEventListener('dragstart', function(e) {
+		// pass the id, so we can get the element on drop
     	e.dataTransfer.setData('tileId', this.id);
 	});
 }
@@ -45,16 +46,21 @@ function attachDragEventsOnDroppableElement(el) {
 		if (e.preventDefault) {
 			e.preventDefault();
 		}
-		this.classList.add('over');
 	});
 	el.addEventListener('dragleave', function(e) {
+		if (e.preventDefault) {
+			e.preventDefault();
+		}
 		this.classList.remove('over');
 	});
 	el.addEventListener('drop', function(e) {
 		this.classList.remove('over');
-		console.log(this);
 		var tile = document.getElementById(e.dataTransfer.getData('tileId'));
-		moveTile(tile,this);
+		console.log(this);
+		if(this.classList.contains('accept-drop')){
+			moveTile(tile,this);
+			findEmptyCell(); // trigger the empty cell detection
+		}
 	});
 };
 
@@ -69,12 +75,14 @@ function moveTile(el, dest) {
 	dest.appendChild(el);
 };
 
-function findDraggableElement() {
+function findEmptyCell() {
 	var cells = document.getElementsByClassName('cell');	
 	for (var i = 0, len = cells.length; i < len; i++) {
+		cells[i].removeAttribute('accept-drop');
 		if(!cells[i].firstChild){
 			//empty
 			console.log('cell empty', cells[i]);
+			cells[i].classList.add('accept-drop');
 		}
 	}
 };
@@ -82,5 +90,5 @@ function findDraggableElement() {
 /* Anonymous init function */
 (function () {
 	buildGrid(conf.grid.rows, conf.grid.cols);
-	findDraggableElement();
+	findEmptyCell();
 })();
