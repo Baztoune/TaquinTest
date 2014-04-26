@@ -1,40 +1,72 @@
 function Game(){
+	this.grid = new Grid(conf.rows, conf.cols);
+}
+function Grid(rows, cols){
+	this.cells = [];
+
+	for (var i = 0; i < rows; i++) {
+		var row = [];
+		for (var j = 0; j < cols; j++) {
+			var cell = new Cell(i, j);
+			if(!cell.isLast()){
+				// except last cell
+				cell.tile = new Tile();
+			}
+			row.push(cell);
+		}
+		this.cells.push(row);
+	}
+}
+function Cell(x, y){
+	var tile;
+	this.x = x;
+	this.y = y;
+}
+function Tile(){
 }
 
 Game.prototype.init = function init(){
-	this.buildGrid(conf.grid.rows, conf.grid.cols);
-	this.findEmptyCell();
+	this.updateView();
 };
 
-Game.prototype.buildGrid = function buildGrid(rows, cols) {
+Game.prototype.detectGameEnd = function detectGameEnd() {
+	alert('We have a winner here');
+};
+
+/*
+ * Build the html from the JS model
+ */
+Game.prototype.updateView = function updateView(){
+	var game = this;
+	var cells = game.grid.cells;
+
 	var grid = document.getElementById('grid');
-	for (var i = 0; i < rows; i++) {
+	cells.forEach(function(col){
 		var newRow = document.createElement('div');
 		newRow.classList.add('row', 'clearfix');
-		for (var j = 0; j < cols; j++) {
+		col.forEach(function(cell){
 			/* Build cell */
 			var newCell = document.createElement('div');
 			newCell.classList.add('cell');
 			newRow.appendChild(newCell);
-			this.attachDragEventsOnDroppableElement(newCell);
+			game.attachDragEventsOnDroppableElement(newCell);
 
 			/* Build tile */
-			if(i!=rows-1 || j!=cols-1){
-				// except last cell
+			if(cell.tile){
 				var newTile = document.createElement('div');
-				newTile.innerHTML = i * 4 + j + 1;
+				newTile.innerHTML = cell.x * 4 + cell.y + 1;
 				newTile.classList.add('tile');
-				newTile.id='tile-' + i + '-' + j;
+				newTile.id='tile-' + cell.x + '-' + cell.y;
 				newTile.setAttribute('draggable', 'true');
 
 				newCell.appendChild(newTile);
 
-				this.attachDragEventsOnDraggableElement(newTile);
+				game.attachDragEventsOnDraggableElement(newTile);
 			}
-		}
+		});
 		grid.appendChild(newRow);
-	}
-};
+	});
+}
 
 Game.prototype.attachDragEventsOnDraggableElement = function attachDragEventsOnDraggableElement(el) {
 	el.addEventListener('dragstart', function(e) {
@@ -72,11 +104,8 @@ Game.prototype.attachDragEventsOnDroppableElement = function attachDragEventsOnD
 	    }
 		this.classList.remove('over');
 		var tile = document.getElementById(e.dataTransfer.getData('tileId'));
-		console.log(this);
-		if(this.classList.contains('accept-drop')){
-			game.moveTile(tile,this);
-			game.findEmptyCell(); // trigger the empty cell detection
-		}
+		game.moveTile(tile,this);
+		
 		return false;
 	}, false);
 };
@@ -89,20 +118,36 @@ Game.prototype.moveTile = function moveTile(el, dest) {
 	dest.appendChild(el);
 };
 
-Game.prototype.findEmptyCell = function findEmptyCell() {
-	var cells = document.getElementsByClassName('cell');	
-	for (var i = 0, len = cells.length; i < len; i++) {
-		cells[i].classList.remove('accept-drop');
-		if(!cells[i].firstChild){
-			//empty cell, can accept drop
-			cells[i].classList.add('accept-drop');
-		}
-	}
+Grid.prototype.getEmptyCell = function getEmptyCell() {
+	var emptyCell;
+	this.cells.forEach(function(col){
+		col.forEach(function(cell){
+			if(cell.isEmpty()){
+				emptyCell = cell;
+			}
+		});
+	});
+	return emptyCell;
 };
 
-Game.prototype.detectGameEnd = function detectGameEnd() {
-	alert('We have a winner here');
-}
+Cell.prototype.isLast = function isLast(){
+	if(this.x + 1 == conf.rows && this.y + 1 == conf.cols){
+		return true;
+	}
+};
+Cell.prototype.isEmpty = function isEmpty(){
+	if(!this.tile){
+		return true;
+	}
+};
+Cell.prototype.isAdjacentTo = function isAdjacentTo(otherCell){
+	var sameRow = cell.y==otherCell.y;
+	var sameCol = cell.x==otherCell.x;
+	if(sameRow && Math.abs(cell.x-otherCell.x)==1
+		|| sameCol && Math.abs(cell.y-otherCell.y)==1){
+		return true;
+	}
+};
 
 /* Anonymous init function */
 (function () {

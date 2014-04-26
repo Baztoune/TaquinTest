@@ -1,6 +1,4 @@
 var conf = {
-	grid : {
-		rows : 4,
-		cols : 4
-	}
+	rows : 4,
+	cols : 4
 };
