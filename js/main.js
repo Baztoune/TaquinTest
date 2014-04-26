@@ -8,16 +8,17 @@ function Game() {
 
 
 Game.prototype.init = function init() {
-	console.debug('starting the game');
+	console.log('starting the game');
 	this.buildView();
 };
 
 Game.prototype.shuffle = function shuffle() {
-	
+	console.log('shuffle called');
 };
 
-Game.prototype.detectGameSolved = function detectGameEnd() {
+Game.prototype.detectGameSolved = function detectGameSolved() {
 	var game = this;
+	var solved = true;
 
 	game.grid.cells.forEach(function(row){
 		row.forEach(function(cell){
@@ -25,13 +26,15 @@ Game.prototype.detectGameSolved = function detectGameEnd() {
 				// if the cell has a tile
 				if(cell.x!=cell.tile.x || cell.y!=cell.tile.y){
 					// is it the good one? if not, quit
-					return;
+					solved=false;
 				}
 			}
 		});
 	});
 
-	alert('We have a winner here!');
+	if(solved){
+		alert('We have a winner here! Congrats');
+	}
 };
 
 /* build the view from the model */
@@ -146,7 +149,8 @@ function Grid(rows, cols) {
 			var cell = new Cell(i, j);
 			if(!cell.isLast()) {
 				// except last cell
-				cell.tile = new Tile(cell);
+				cell.tile = new Tile(i,j);
+				cell.tile.cell=cell;
 			}
 			row.push(cell);
 		}
@@ -183,12 +187,12 @@ Cell.prototype.acceptDrop = function acceptDrop(tile) {
 	var srcCell = tile.cell;
 
 	if(dstCell.isAdjacentTo(srcCell) && dstCell.isEmpty()) {
-		console.debug('yep, can drop');
+		console.log('yep, can drop');
 		return true;
 	}
-	console.debug(dstCell.isAdjacentTo(srcCell));
-	console.debug(dstCell.isEmpty());
-	console.debug('nop, can\'t drop');
+	console.log(dstCell.isAdjacentTo(srcCell));
+	console.log(dstCell.isEmpty());
+	console.log('nop, can\'t drop');
 	return false;
 };
 Cell.prototype.isEmpty = function isEmpty() {
@@ -219,24 +223,30 @@ Cell.prototype.clear = function clear() {
 /*
  * Tile object
  */
-function Tile(cell) {
-	this.cell = cell;
+function Tile(x,y) {
+	this.x=x;
+	this.y=y;
+	var cell;
 }
 Tile.prototype.getDomElement = function getDomElement() {
 	return this.cell.getDomElement().firstChild;
 };
 Tile.prototype.moveTo = function moveTo(cell) {
-	console.debug('tile will be moved from ',this.cell);
+	console.log('tile will be moved from ',this.cell);
 	cell.getDomElement().appendChild(this.getDomElement());
 	this.cell.clear();
 	this.cell=cell;
 	this.cell.tile=this;
 
-	console.debug('tile moved to',this.cell );
+	game.detectGameSolved();
+	console.log('tile moved to',this.cell );
 };
 
-/* Anonymous init function */
-(function () {
-	var game = new Game();
-	game.init();
-})();
+
+/*Start game*/
+var game = new Game();
+game.init();
+var button = document.getElementById('shuffle-button');
+button.addEventListener('click',function(){
+	game.shuffle();
+});

@@ -39,6 +39,9 @@
 .tile{
 	height:100%;
 	cursor:move;
+	border-radius: 5px;
+	background-clip: padding-box;
+	border:1px outset rgb(255, 255, 255);
 }
 .accept-drop{
 	border:2px dashed black;
