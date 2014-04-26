@@ -65,7 +65,6 @@ Game.prototype.buildView = function buildView() {
 			/* Build tile */
 			if(cell.tile) {
 				var newTile = document.createElement('div');
-				newTile.innerHTML = cell.x * 4 + cell.y + 1;
 				newTile.classList.add('tile');
 				newTile.id='tile-' + cell.x + '-' + cell.y;
 				newTile.setAttribute('draggable', 'true');
