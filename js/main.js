@@ -100,6 +100,10 @@ Game.prototype.findEmptyCell = function findEmptyCell() {
 	}
 };
 
+Game.prototype.detectGameEnd = function detectGameEnd() {
+	alert('We have a winner here');
+}
+
 /* Anonymous init function */
 (function () {
 	var game = new Game();
