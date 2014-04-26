@@ -64,5 +64,12 @@ function moveTile(el, dest) {
 	dest.appendChild(el);
 };
 
+function findDraggableElement() {
+	var tiles = document.getElementsByClassName('tile');
+	console.log(tiles);
+};
 
-buildGrid(conf.grid.rows, conf.grid.cols);
+/* Anonymous init function */
+(function () {
+	buildGrid(conf.grid.rows, conf.grid.cols);
+})();
