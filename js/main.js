@@ -1,45 +1,41 @@
+/*
+ * Game object
+ */
 function Game() {
 	this.grid = new Grid(conf.rows, conf.cols);
 	var draggedTile = null;
 }
-function Grid(rows, cols) {
-	this.cells = [];
 
-	for (var i = 0; i < rows; i++) {
-		var row = [];
-		for (var j = 0; j < cols; j++) {
-			var cell = new Cell(i, j);
-			if(!cell.isLast()) {
-				// except last cell
-				cell.tile = new Tile(cell);
-			}
-			row.push(cell);
-		}
-		this.cells.push(row);
-	}
-}
-function Cell(x, y) {
-	var tile;
-	this.x = x;
-	this.y = y;
-}
-function Tile(cell) {
-	this.cell = cell;
-}
 
 Game.prototype.init = function init() {
 	console.debug('starting the game');
-	this.updateView();
+	this.buildView();
 };
 
-Game.prototype.detectGameEnd = function detectGameEnd() {
-	alert('We have a winner here');
+Game.prototype.shuffle = function shuffle() {
+	
 };
 
-/*
- * Build the html from the JS model
- */
-Game.prototype.updateView = function updateView() {
+Game.prototype.detectGameSolved = function detectGameEnd() {
+	var game = this;
+
+	game.grid.cells.forEach(function(row){
+		row.forEach(function(cell){
+			if(cell.tile){
+				// if the cell has a tile
+				if(cell.x!=cell.tile.x || cell.y!=cell.tile.y){
+					// is it the good one? if not, quit
+					return;
+				}
+			}
+		});
+	});
+
+	alert('We have a winner here!');
+};
+
+/* build the view from the model */
+Game.prototype.buildView = function buildView() {
 	var game = this;
 	var cells = game.grid.cells;
 
@@ -138,6 +134,25 @@ Game.prototype.moveTile = function moveTile(el, dest) {
 	dest.appendChild(el);
 };
 
+/*
+ * Grid object
+ */
+function Grid(rows, cols) {
+	this.cells = [];
+
+	for (var i = 0; i < rows; i++) {
+		var row = [];
+		for (var j = 0; j < cols; j++) {
+			var cell = new Cell(i, j);
+			if(!cell.isLast()) {
+				// except last cell
+				cell.tile = new Tile(cell);
+			}
+			row.push(cell);
+		}
+		this.cells.push(row);
+	}
+}
 Grid.prototype.getEmptyCell = function getEmptyCell() {
 	var emptyCell;
 	this.cells.forEach(function(col) {
@@ -150,6 +165,14 @@ Grid.prototype.getEmptyCell = function getEmptyCell() {
 	return emptyCell;
 };
 
+/*
+ * Cell object
+ */
+function Cell(x, y) {
+	var tile;
+	this.x = x;
+	this.y = y;
+}
 Cell.prototype.isLast = function isLast() {
 	if(this.x + 1 == conf.rows && this.y + 1 == conf.cols) {
 		return true;
@@ -192,16 +215,23 @@ Cell.prototype.clear = function clear() {
 	this.tile=null;
 };
 
+
+/*
+ * Tile object
+ */
+function Tile(cell) {
+	this.cell = cell;
+}
 Tile.prototype.getDomElement = function getDomElement() {
 	return this.cell.getDomElement().firstChild;
 };
-
 Tile.prototype.moveTo = function moveTo(cell) {
 	console.debug('tile will be moved from ',this.cell);
 	cell.getDomElement().appendChild(this.getDomElement());
 	this.cell.clear();
 	this.cell=cell;
 	this.cell.tile=this;
+
 	console.debug('tile moved to',this.cell );
 };
 
