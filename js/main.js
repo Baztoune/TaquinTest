@@ -1,3 +1,10 @@
+function Game(){
+}
+
+Game.prototype.init = function init(){
+	buildGrid(conf.grid.rows, conf.grid.cols);
+};
+
 function buildGrid(rows, cols) {
 	var grid = document.getElementById('grid');
 	for (var i = 0; i < rows; i++) {
@@ -95,6 +102,7 @@ function findEmptyCell() {
 
 /* Anonymous init function */
 (function () {
-	buildGrid(conf.grid.rows, conf.grid.cols);
+	var game = new Game();
+	game.init();
 	findEmptyCell();
 })();
