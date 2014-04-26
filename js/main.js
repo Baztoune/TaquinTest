@@ -64,8 +64,13 @@ Game.prototype.buildView = function buildView() {
 
 			/* Build tile */
 			if(cell.tile) {
+				var style = '';
+					style += 'background: url('+conf.imgSrc+')';
+					style += 'no-repeat -'+conf.tileWidth*cell.y+'px -'+conf.tileHeight*cell.x+'px;';
+
 				var newTile = document.createElement('div');
 				newTile.classList.add('tile');
+				newTile.setAttribute('style',style);
 				newTile.id='tile-' + cell.x + '-' + cell.y;
 				newTile.setAttribute('draggable', 'true');
 				newTile.tileObject=cell.tile;

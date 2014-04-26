@@ -1,4 +1,7 @@
 var conf = {
+	imgSrc : 'img/html5-400x400.png',
+	tileWidth : 100,
+	tileHeight : 100,
 	rows : 4,
 	cols : 4,
 	difficulty : 10
