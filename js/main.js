@@ -41,19 +41,25 @@ function attachDragEventsOnDroppableElement(el) {
 			e.preventDefault();
 		}
 		this.classList.add('over');
-	});
+		return false;
+	}, false);
 	el.addEventListener('dragover', function(e) {
 		if (e.preventDefault) {
 			e.preventDefault();
 		}
-	});
+		return false;
+	}, false);
 	el.addEventListener('dragleave', function(e) {
 		if (e.preventDefault) {
 			e.preventDefault();
 		}
 		this.classList.remove('over');
-	});
+		return false;
+	}, false);
 	el.addEventListener('drop', function(e) {
+	    if (event.preventDefault) {
+	    	event.preventDefault();
+	    }
 		this.classList.remove('over');
 		var tile = document.getElementById(e.dataTransfer.getData('tileId'));
 		console.log(this);
@@ -61,7 +67,8 @@ function attachDragEventsOnDroppableElement(el) {
 			moveTile(tile,this);
 			findEmptyCell(); // trigger the empty cell detection
 		}
-	});
+		return false;
+	}, false);
 };
 
 function moveTile(el, dest) {
