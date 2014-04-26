@@ -4,20 +4,25 @@ function buildGrid(rows, cols) {
 		var newRow = document.createElement('div');
 		newRow.classList.add('row', 'clearfix');
 		for (var j = 0; j < cols; j++) {
+			/* Build cell */
 			var newCell = document.createElement('div');
 			newCell.classList.add('cell');
-
-			var newTile = document.createElement('div');
-			newTile.innerHTML = i * 4 + j + 1;
-			newTile.classList.add('tile');
-			newTile.id='tile-' + i + '-' + j;
-			newTile.setAttribute('draggable', 'true');
-
-			newCell.appendChild(newTile);
 			newRow.appendChild(newCell);
-
-			attachDragEventsOnDraggableElement(newTile);
 			attachDragEventsOnDroppableElement(newCell);
+
+			/* Build tile */
+			if(i!=rows-1 || j!=cols-1){
+				// except last cell
+				var newTile = document.createElement('div');
+				newTile.innerHTML = i * 4 + j + 1;
+				newTile.classList.add('tile');
+				newTile.id='tile-' + i + '-' + j;
+				newTile.setAttribute('draggable', 'true');
+
+				newCell.appendChild(newTile);
+
+				attachDragEventsOnDraggableElement(newTile);
+			}
 		}
 		grid.appendChild(newRow);
 	}
@@ -65,11 +70,17 @@ function moveTile(el, dest) {
 };
 
 function findDraggableElement() {
-	var tiles = document.getElementsByClassName('tile');
-	console.log(tiles);
+	var cells = document.getElementsByClassName('cell');	
+	for (var i = 0, len = cells.length; i < len; i++) {
+		if(!cells[i].firstChild){
+			//empty
+			console.log('cell empty', cells[i]);
+		}
+	}
 };
 
 /* Anonymous init function */
 (function () {
 	buildGrid(conf.grid.rows, conf.grid.cols);
+	findDraggableElement();
 })();
