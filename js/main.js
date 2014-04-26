@@ -2,10 +2,11 @@ function Game(){
 }
 
 Game.prototype.init = function init(){
-	buildGrid(conf.grid.rows, conf.grid.cols);
+	this.buildGrid(conf.grid.rows, conf.grid.cols);
+	this.findEmptyCell();
 };
 
-function buildGrid(rows, cols) {
+Game.prototype.buildGrid = function buildGrid(rows, cols) {
 	var grid = document.getElementById('grid');
 	for (var i = 0; i < rows; i++) {
 		var newRow = document.createElement('div');
@@ -15,7 +16,7 @@ function buildGrid(rows, cols) {
 			var newCell = document.createElement('div');
 			newCell.classList.add('cell');
 			newRow.appendChild(newCell);
-			attachDragEventsOnDroppableElement(newCell);
+			this.attachDragEventsOnDroppableElement(newCell);
 
 			/* Build tile */
 			if(i!=rows-1 || j!=cols-1){
@@ -28,21 +29,23 @@ function buildGrid(rows, cols) {
 
 				newCell.appendChild(newTile);
 
-				attachDragEventsOnDraggableElement(newTile);
+				this.attachDragEventsOnDraggableElement(newTile);
 			}
 		}
 		grid.appendChild(newRow);
 	}
 };
 
-function attachDragEventsOnDraggableElement(el) {
+Game.prototype.attachDragEventsOnDraggableElement = function attachDragEventsOnDraggableElement(el) {
 	el.addEventListener('dragstart', function(e) {
 		// pass the id, so we can get the element on drop
     	e.dataTransfer.setData('tileId', this.id);
 	});
 }
 
-function attachDragEventsOnDroppableElement(el) {
+Game.prototype.attachDragEventsOnDroppableElement = function attachDragEventsOnDroppableElement(el) {
+	var game = this; // cache before event handlers override it
+
 	el.addEventListener('dragenter', function(e) {
 		if (e.preventDefault) {
 			e.preventDefault();
@@ -71,17 +74,14 @@ function attachDragEventsOnDroppableElement(el) {
 		var tile = document.getElementById(e.dataTransfer.getData('tileId'));
 		console.log(this);
 		if(this.classList.contains('accept-drop')){
-			moveTile(tile,this);
-			findEmptyCell(); // trigger the empty cell detection
+			game.moveTile(tile,this);
+			game.findEmptyCell(); // trigger the empty cell detection
 		}
 		return false;
 	}, false);
 };
 
-function moveTile(el, dest) {
-	console.log(el);
-	console.log(dest);
-
+Game.prototype.moveTile = function moveTile(el, dest) {
 	/* Clear cell */
 	while (dest.firstChild) {
 		dest.removeChild(dest.firstChild);
@@ -89,7 +89,7 @@ function moveTile(el, dest) {
 	dest.appendChild(el);
 };
 
-function findEmptyCell() {
+Game.prototype.findEmptyCell = function findEmptyCell() {
 	var cells = document.getElementsByClassName('cell');	
 	for (var i = 0, len = cells.length; i < len; i++) {
 		cells[i].classList.remove('accept-drop');
@@ -104,5 +104,4 @@ function findEmptyCell() {
 (function () {
 	var game = new Game();
 	game.init();
-	findEmptyCell();
 })();
