@@ -13,7 +13,14 @@ Game.prototype.init = function init() {
 };
 
 Game.prototype.shuffle = function shuffle() {
+	// to make sure we have a solvable grid, we start with solved grid and make 100 random moves
+	// could be optimized
 	console.log('shuffle called');
+
+	var game = this;
+	for(var i=0;i<100;i++){
+		game.randomMove();
+	}
 };
 
 Game.prototype.detectGameSolved = function detectGameSolved() {
@@ -137,6 +144,16 @@ Game.prototype.moveTile = function moveTile(el, dest) {
 	dest.appendChild(el);
 };
 
+Game.prototype.randomMove = function randomMove() {
+	var game = this;
+	var grid = game.grid;
+	var emptyCell = game.grid.getEmptyCell();
+
+	// pick a move
+	emptyCell.getRandomAdjacentCell().tile.moveTo(emptyCell, true);
+
+}
+
 /*
  * Grid object
  */
@@ -147,6 +164,7 @@ function Grid(rows, cols) {
 		var row = [];
 		for (var j = 0; j < cols; j++) {
 			var cell = new Cell(i, j);
+			cell.grid=this;
 			if(!cell.isLast()) {
 				// except last cell
 				cell.tile = new Tile(i,j);
@@ -174,6 +192,7 @@ Grid.prototype.getEmptyCell = function getEmptyCell() {
  */
 function Cell(x, y) {
 	var tile;
+	var grid;
 	this.x = x;
 	this.y = y;
 }
@@ -218,6 +237,28 @@ Cell.prototype.getDomElement = function getDomElement() {
 Cell.prototype.clear = function clear() {
 	this.tile=null;
 };
+Cell.prototype.getRandomAdjacentCell = function getRandomAdjacentCell() {
+	var max_x = conf.cols-1 ;
+	var max_y = conf.rows-1 ;
+	console.log(this.x,'/',max_x,':',this.y,'/',max_y);
+
+	var availableCells = [];
+	if(this.x-1>=0){
+		availableCells.push(game.grid.cells[this.x-1][this.y]);
+	}
+	if(this.x+1<=max_x){
+		availableCells.push(game.grid.cells[this.x+1][this.y]);
+	}
+	if(this.y-1>=0){
+		availableCells.push(game.grid.cells[this.x][this.y-1]);
+	}
+	if(this.y+1<=max_y){
+		availableCells.push(game.grid.cells[this.x][this.y+1]);
+	}
+
+	// return any of the available cells
+	return availableCells[getRandomInt(0,availableCells.length-1)];
+};
 
 
 /*
@@ -231,17 +272,24 @@ function Tile(x,y) {
 Tile.prototype.getDomElement = function getDomElement() {
 	return this.cell.getDomElement().firstChild;
 };
-Tile.prototype.moveTo = function moveTo(cell) {
+Tile.prototype.moveTo = function moveTo(cell, skipSolutionDetection) {
 	console.log('tile will be moved from ',this.cell);
 	cell.getDomElement().appendChild(this.getDomElement());
 	this.cell.clear();
 	this.cell=cell;
 	this.cell.tile=this;
 
-	game.detectGameSolved();
+	if(!skipSolutionDetection){
+		game.detectGameSolved();
+	}
 	console.log('tile moved to',this.cell );
 };
 
+
+/* Returns a random integer between min and max */
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 /*Start game*/
 var game = new Game();
