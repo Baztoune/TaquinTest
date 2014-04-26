@@ -18,7 +18,7 @@ Game.prototype.shuffle = function shuffle() {
 	console.log('shuffle called');
 
 	var game = this;
-	for(var i=0;i<100;i++){
+	for(var i=0;i<conf.difficulty;i++){
 		game.randomMove();
 	}
 };
