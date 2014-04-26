@@ -87,7 +87,14 @@ Game.prototype.attachDragEventsOnDraggableElement = function attachDragEventsOnD
     	game.draggedTile = this.tileObject;
 	}, false);
 	el.addEventListener('dragenter', function(e) {
+		// prevent event from propagating (otherwise dragenter target is the tile)
 		e.stopPropagation();
+	}, false);
+
+	/*Awesome fix for IE9 http://stackoverflow.com/questions/5500615/internet-explorer-9-drag-and-drop-dnd#comment11341167_8986075*/
+	el.addEventListener('selectstart', function(e){
+		this.dragDrop(); 
+		return false;
 	}, false);
 };
 
@@ -239,7 +246,6 @@ Cell.prototype.clear = function clear() {
 Cell.prototype.getRandomAdjacentCell = function getRandomAdjacentCell() {
 	var max_x = conf.cols-1 ;
 	var max_y = conf.rows-1 ;
-	console.log(this.x,'/',max_x,':',this.y,'/',max_y);
 
 	var availableCells = [];
 	if(this.x-1>=0){
@@ -286,7 +292,7 @@ Tile.prototype.moveTo = function moveTo(cell, skipSolutionDetection) {
 
 
 /* Returns a random integer between min and max */
-function getRandomInt(min, max) {
+var getRandomInt = function(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
