@@ -17,7 +17,9 @@ Game.prototype.shuffle = function shuffle() {
 	console.log('shuffle called');
 
 	var game = this;
+	console.log('vcfvf111');
 	for(var i=0;i<conf.shuffleMoves;i++){
+		console.log('vcfvf');
 		game.randomMove();
 	}
 };
@@ -326,7 +328,9 @@ var showVideo = function(){
 	var ytVideoId = conf.youtubeUrl.split('?v=')[1]; // get the video id
 	ytPlayer.setAttribute('allowfullscreen', true);
 	ytPlayer.setAttribute('frameborder', 0);
-	ytPlayer.src='http://www.youtube.com/embed/'+ytVideoId+'?html5=1';
+	ytPlayer.setAttribute('width', 500);
+	ytPlayer.setAttribute('height', 300);
+	ytPlayer.src='http://www.youtube.com/embed/'+ytVideoId+'?html5=1&autohide=1';
 
 	ytContainer.appendChild(ytPlayer);
 
