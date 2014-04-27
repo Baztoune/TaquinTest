@@ -2,20 +2,26 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title></title>
+        <title>TaquinTest</title>
 
         <link rel="stylesheet" href="css/main.css">
     </head>
     <body>
         <div class="container">
             <p>C'est parti!</p>
-            <a href="#" id="shuffle-button">Shuffle</a>
+            <a href="#" id="shuffle-button" title="shuffle the grid">Shuffle</a>
 
             <div id="grid"></div>
 
+            <div class="overlay" style="display:none;"></div>
+            <div class="modal" style="display:none;">
+                <div id="youtubePlayerContainer"></div>
+            </div>
+
+            <!-- Loading polyfills. We need it for IE9 (classlist exist in IE10+) -->
             <script src="js/polyfill_classlist.js"></script>
             <script src="js/polyfill_console.js"></script>
-
+            <!-- Loading the conf file first, then the main JS file -->
             <script src="js/conf.json"></script>
             <script src="js/main.js"></script>
         </div>

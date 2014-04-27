@@ -1,8 +1,23 @@
+/*
+ * CONFIGURATION (JSON Format)
+ * 
+ * imgSrc = relative orabsolute path to the background image
+ * tileWidth = width of each cell in pixels
+ * tileHeight = height of each cell in pixels
+ * rows = number of columns of the grid
+ * cols = number of columns of the grid
+ * shuffleMoves = number of moves when shuffle
+ * linkUrl = page that is opened on a cell double click
+ * youtubeUrl = youtube video that is played on a cell double click
+ */
+
 var conf = {
 	imgSrc : 'img/html5-400x400.png',
 	tileWidth : 100,
 	tileHeight : 100,
 	rows : 4,
 	cols : 4,
-	difficulty : 10
+	difficulty : 10,
+	linkUrl : 'https://github.com/Baztoune/TaquinTest',
+	youtubeUrl : 'https://www.youtube.com/watch?v=kxopViU98Xo'
 };

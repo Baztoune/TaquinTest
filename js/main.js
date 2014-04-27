@@ -6,7 +6,6 @@ function Game() {
 	var draggedTile = null;
 }
 
-
 Game.prototype.init = function init() {
 	console.log('starting the game');
 	this.buildView();
@@ -18,7 +17,7 @@ Game.prototype.shuffle = function shuffle() {
 	console.log('shuffle called');
 
 	var game = this;
-	for(var i=0;i<conf.difficulty;i++){
+	for(var i=0;i<conf.shuffleMoves;i++){
 		game.randomMove();
 	}
 };
@@ -65,7 +64,7 @@ Game.prototype.buildView = function buildView() {
 			/* Build tile */
 			if(cell.tile) {
 				var style = '';
-					style += 'background: url('+conf.imgSrc+')';
+					style += 'background: url('+conf.imgSrc+') ';
 					style += 'no-repeat -'+conf.tileWidth*cell.y+'px -'+conf.tileHeight*cell.x+'px;';
 
 				var newTile = document.createElement('div');
@@ -91,6 +90,7 @@ Game.prototype.attachDragEventsOnDraggableElement = function attachDragEventsOnD
     	e.dataTransfer.setData('Text', this.id);
     	game.draggedTile = this.tileObject;
 	}, false);
+
 	el.addEventListener('dragenter', function(e) {
 		// prevent event from propagating (otherwise dragenter target is the tile)
 		e.stopPropagation();
@@ -100,6 +100,19 @@ Game.prototype.attachDragEventsOnDraggableElement = function attachDragEventsOnD
 	el.addEventListener('selectstart', function(e){
 		this.dragDrop(); 
 		return false;
+	}, false);
+
+	el.addEventListener('dblclick', function(e) {
+		// half of the time, we open a link or a video
+		if(getRandomInt(0,100)%2){
+			// open youtube popin
+			console.log('opening video Pop-in');
+			showVideo();
+		} else {
+			// open link in new tab
+			console.log('opening website in new tab');
+			window.open(conf.linkUrl,'_blank');
+		}
 	}, false);
 };
 
@@ -162,7 +175,6 @@ Game.prototype.randomMove = function randomMove() {
 
 	// pick a move
 	emptyCell.getRandomAdjacentCell().tile.moveTo(emptyCell, true);
-
 }
 
 /*
@@ -220,8 +232,6 @@ Cell.prototype.acceptDrop = function acceptDrop(tile) {
 		console.log('yep, can drop');
 		return true;
 	}
-	console.log(dstCell.isAdjacentTo(srcCell));
-	console.log(dstCell.isEmpty());
 	console.log('nop, can\'t drop');
 	return false;
 };
@@ -308,3 +318,29 @@ var button = document.getElementById('shuffle-button');
 button.addEventListener('click',function(){
 	game.shuffle();
 });
+
+var showVideo = function(){
+	/* Build youtube player */
+	var ytContainer = document.getElementById('youtubePlayerContainer');
+	var ytPlayer = document.createElement('iframe');
+	var ytVideoId = conf.youtubeUrl.split('?v=')[1]; // get the video id
+	ytPlayer.setAttribute('allowfullscreen', true);
+	ytPlayer.setAttribute('frameborder', 0);
+	ytPlayer.src='http://www.youtube.com/embed/'+ytVideoId+'?html5=1';
+
+	ytContainer.appendChild(ytPlayer);
+
+	/* Show modal */
+	document.getElementsByClassName('modal')[0].style.display='block';
+	document.getElementsByClassName('overlay')[0].style.display='block';
+	document.getElementsByClassName('overlay')[0].addEventListener('click', hideVideo);
+};
+
+var hideVideo = function(){
+	/* Destroy youtube player*/
+	document.getElementById('youtubePlayerContainer').innerHTML = ''; // clear
+
+	/* Hide modal*/
+	document.getElementsByClassName('modal')[0].style.display='none';
+	document.getElementsByClassName('overlay')[0].style.display='none';
+};
