@@ -52,11 +52,11 @@ Tile.prototype.attachDragDropEvents = function attachDragDropEvents() {
 		if(getRandomInt(0,100)%2){
 			// open youtube popin
 			console.log('opening video Pop-in');
-			playRandomVideo();
+			game.playRandomVideo();
 		} else {
 			// open link in new tab
 			console.log('opening website in new tab');
-			openRandomPage();
+			game.openRandomPage();
 		}
 	}, false);
 };

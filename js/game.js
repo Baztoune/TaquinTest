@@ -4,6 +4,8 @@
 function Game() {
 	this.grid = new Grid(conf.rows, conf.cols);
 	var draggedTile = null;
+
+	this.init();
 }
 
 /* First call, triggers the grid building */
@@ -111,3 +113,41 @@ Game.prototype.randomMove = function randomMove() {
 	// pick a move
 	emptyCell.getRandomAdjacentCell().tile.moveTo(emptyCell, true);
 }
+
+/* Play a random youtube video from the "videos" list provided in conf */
+Game.prototype.playRandomVideo = function playRandomVideo(){
+	var index = getRandomInt(0,conf.videos.length-1);
+
+	/* Build youtube player */
+	var ytContainer = document.getElementById('youtubePlayerContainer');
+	var ytPlayer = document.createElement('iframe');
+	var ytVideoId = conf.videos[index].split('?v=')[1]; // get the video id
+	ytPlayer.setAttribute('allowfullscreen', true);
+	ytPlayer.setAttribute('frameborder', 0);
+	ytPlayer.setAttribute('width', 500);
+	ytPlayer.setAttribute('height', 300);
+	ytPlayer.src='http://www.youtube.com/embed/'+ytVideoId+'?html5=1&autohide=1';
+
+	ytContainer.appendChild(ytPlayer);
+
+	/* Show modal */
+	document.getElementsByClassName('modal')[0].style.display='block';
+	document.getElementsByClassName('overlay')[0].style.display='block';
+	document.getElementsByClassName('overlay')[0].addEventListener('click', this.closeVideo);
+};
+
+/* Destroy the player and hide the modal */
+Game.prototype.closeVideo = function closeVideo(){
+	/* Destroy youtube player*/
+	document.getElementById('youtubePlayerContainer').innerHTML = ''; // clear
+
+	/* Hide modal*/
+	document.getElementsByClassName('modal')[0].style.display='none';
+	document.getElementsByClassName('overlay')[0].style.display='none';
+};
+
+/* Opens a random page from the "pages" list provided in conf */
+Game.prototype.openRandomPage = function openRandomPage(){
+	var index = getRandomInt(0,conf.pages.length-1);
+	window.open(conf.pages[index],'_blank');
+};
