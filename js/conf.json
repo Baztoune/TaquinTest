@@ -2,8 +2,8 @@
  * CONFIGURATION (JSON Format)
  * 
  * imgSrc = relative orabsolute path to the background image
- * tileWidth = width of each cell in pixels
- * tileHeight = height of each cell in pixels
+ * cellWidth = width of each cell in pixels
+ * cellHeight = height of each cell in pixels
  * rows = number of columns of the grid
  * cols = number of columns of the grid
  * shuffleMoves = number of moves when shuffle
@@ -13,8 +13,8 @@
 
 var conf = {
 	imgSrc : 'img/html5-400x400.png',
-	tileWidth : 100,
-	tileHeight : 100,
+	cellWidth : 100,
+	cellHeight : 100,
 	rows : 4,
 	cols : 4,
 	shuffleMoves : 10,

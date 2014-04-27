@@ -50,36 +50,43 @@ Game.prototype.detectGameSolved = function detectGameSolved() {
 Game.prototype.buildView = function buildView() {
 	var cells = this.grid.cells;
 
-	var grid = document.getElementById('grid');
+	var container = document.getElementById('grid-container');
+	var containerStyle = 'width:' + conf.cols * conf.cellWidth + 'px;';
+	container.setAttribute('style',containerStyle);
+
+	var newGrid = document.getElementById('grid');
 	cells.forEach(function(col) {
 		var newRow = document.createElement('div');
 		newRow.classList.add('row', 'clearfix');
 		col.forEach(function(cell) {
 			/* Build cell */
+			var cellStyle = '';
+				cellStyle += 'width:'+conf.cellWidth+'px;';
+				cellStyle += 'height:'+conf.cellHeight+'px';
 			var newCell = document.createElement('div');
 			newCell.classList.add('cell');
+			newCell.setAttribute('style',cellStyle);
 			newCell.id='cell-' + cell.x + '-' + cell.y;
 			newCell.cellObject=cell;
 			newRow.appendChild(newCell);
 
 			/* Build tile */
 			if(cell.tile) {
-				var style = '';
-					style += 'background: url('+conf.imgSrc+') ';
-					style += 'no-repeat -'+conf.tileWidth*cell.y+'px -'+conf.tileHeight*cell.x+'px;';
+				var tileStyle = '';
+					tileStyle += 'background: url('+conf.imgSrc+') ';
+					tileStyle += 'no-repeat -'+conf.cellWidth*cell.y+'px -'+conf.cellHeight*cell.x+'px;';
 
 				var newTile = document.createElement('div');
 				newTile.classList.add('tile');
-				newTile.setAttribute('style',style);
+				newTile.setAttribute('style',tileStyle);
 				newTile.id='tile-' + cell.x + '-' + cell.y;
 				newTile.setAttribute('draggable', 'true');
 				newTile.tileObject=cell.tile;
 
 				newCell.appendChild(newTile);
-
 			}
 		});
-		grid.appendChild(newRow);
+		newGrid.appendChild(newRow);
 	});
 }
 

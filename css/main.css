@@ -70,8 +70,7 @@ iframe {
 /*
  * 3 - Global
  */
-.container {
-	width: 400px;
+#grid-container {
 	margin: 0 auto;
 }
 #grid{
@@ -80,8 +79,6 @@ iframe {
 .row {
 }
 .cell {
-	width:100px;
-	height:100px;
 	float : left;
 	border:1px solid gray;
 }

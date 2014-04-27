@@ -7,29 +7,30 @@
         <link rel="stylesheet" href="css/main.css">
     </head>
     <body>
-        <div class="container">
+        <div id="grid-container">
+            <!-- Here goes the game-->
             <div class="grid-header clearfix">
                 <a href="#" id="shuffle-button" class="button" title="shuffle the grid">Shuffle</a>
             </div>
-
             <div id="grid"></div>
-
-            <div class="overlay" style="display:none;"></div>
-            <div class="modal" style="display:none;">
-                <div id="youtubePlayerContainer"></div>
-            </div>
-
-            <!-- Loading polyfills. We need it for IE9 (classlist exist in IE10+) -->
-            <script src="js/polyfill_classlist.js"></script>
-            <script src="js/polyfill_console.js"></script>
-            <!-- Loading the conf file first -->
-            <script src="js/conf.json"></script>
-            <!-- Loading the js files. Each object has its own file, main.js launch the game -->
-            <script src="js/game.js"></script>
-            <script src="js/grid.js"></script>
-            <script src="js/cell.js"></script>
-            <script src="js/tile.js"></script>
-            <script src="js/main.js"></script>
         </div>
+
+        <!-- Modal window -->
+        <div class="overlay" style="display:none;"></div>
+        <div class="modal" style="display:none;">
+            <div id="youtubePlayerContainer"></div>
+        </div>
+
+        <!-- Loading polyfills. We need it for IE9 (classlist exist in IE10+) -->
+        <script src="js/polyfill_classlist.js"></script>
+        <script src="js/polyfill_console.js"></script>
+        <!-- Loading the conf file first -->
+        <script src="js/conf.json"></script>
+        <!-- Loading the js files. Each object has its own file, main.js launch the game -->
+        <script src="js/game.js"></script>
+        <script src="js/grid.js"></script>
+        <script src="js/cell.js"></script>
+        <script src="js/tile.js"></script>
+        <script src="js/main.js"></script>
     </body>
 </html>
