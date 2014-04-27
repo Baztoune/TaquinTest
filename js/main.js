@@ -15,12 +15,14 @@ var getRandomInt = function(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-/* Build the video player and show the modal window */
-var showVideo = function(){
+/* Play a random youtube video from the "videos" list provided in conf */
+var playRandomVideo = function(){
+	var index = getRandomInt(0,conf.videos.length-1);
+
 	/* Build youtube player */
 	var ytContainer = document.getElementById('youtubePlayerContainer');
 	var ytPlayer = document.createElement('iframe');
-	var ytVideoId = conf.youtubeUrl.split('?v=')[1]; // get the video id
+	var ytVideoId = conf.videos[index].split('?v=')[1]; // get the video id
 	ytPlayer.setAttribute('allowfullscreen', true);
 	ytPlayer.setAttribute('frameborder', 0);
 	ytPlayer.setAttribute('width', 500);
@@ -32,11 +34,11 @@ var showVideo = function(){
 	/* Show modal */
 	document.getElementsByClassName('modal')[0].style.display='block';
 	document.getElementsByClassName('overlay')[0].style.display='block';
-	document.getElementsByClassName('overlay')[0].addEventListener('click', hideVideo);
+	document.getElementsByClassName('overlay')[0].addEventListener('click', closeVideo);
 };
 
 /* Destroy the player and hide the modal */
-var hideVideo = function(){
+var closeVideo = function(){
 	/* Destroy youtube player*/
 	document.getElementById('youtubePlayerContainer').innerHTML = ''; // clear
 
@@ -45,3 +47,8 @@ var hideVideo = function(){
 	document.getElementsByClassName('overlay')[0].style.display='none';
 };
 
+/* Opens a random page from the "pages" list provided in conf */
+var openRandomPage = function(){
+	var index = getRandomInt(0,conf.pages.length-1);
+	window.open(conf.pages[index],'_blank');
+}

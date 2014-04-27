@@ -7,8 +7,8 @@
  * rows = number of columns of the grid
  * cols = number of columns of the grid
  * shuffleMoves = number of moves when shuffle
- * linkUrl = page that is opened on a cell double click
- * youtubeUrl = youtube video that is played on a cell double click
+ * pages = list of url that are randomly opened on a cell double click
+ * videos = list of youtube videos that are randomly played on a cell double click
  */
 
 var conf = {
@@ -18,6 +18,14 @@ var conf = {
 	rows : 4,
 	cols : 4,
 	shuffleMoves : 10,
-	linkUrl : 'https://github.com/Baztoune/TaquinTest',
-	youtubeUrl : 'https://www.youtube.com/watch?v=kxopViU98Xo'
+	pages : [
+		'http://github.com/Baztoune/TaquinTest',
+		'http://stackoverflow.com',
+		'http://google.com/'
+	],
+	videos : [
+		'http://www.youtube.com/watch?v=kxopViU98Xo',
+		'http://www.youtube.com/watch?v=OQSNhk5ICTI',
+		'http://www.youtube.com/watch?v=w0ffwDYo00Q'
+	]	
 };
