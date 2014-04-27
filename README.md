@@ -11,7 +11,7 @@
 - Ouvrir index.html
 
 ### Compte-rendu
-- Temps de développement total : environ 12h. 4h pour un prototype minimal, 3h d'évolutions, refactoring, amélioration de code, 2h compatibilité IE9, 3h mise en forme, recherche
+- Temps de développement total : environ 15h. 5h pour un prototype minimal, 5h d'évolutions, refactoring, amélioration de code, 2h compatibilité IE9, 3h mise en forme, recherche
 - Difficultés rencontrées : Le drag&drop est assez buggé dans IE9 et fonctionnait 1 fois sur 5. J'ai finalement trouvé une correction pour forcer le trigger de l'event.
 - Incompréhensions énoncé : 
   - il est demandé d'ouvrir une vidéo youtube/page web (configurable) au double click sur une case. Faut-il que chaque case soit liée à une vidéo/page? 
