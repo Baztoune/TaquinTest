@@ -17,7 +17,7 @@ var conf = {
 	tileHeight : 100,
 	rows : 4,
 	cols : 4,
-	difficulty : 10,
+	shuffleMoves : 10,
 	linkUrl : 'https://github.com/Baztoune/TaquinTest',
 	youtubeUrl : 'https://www.youtube.com/watch?v=kxopViU98Xo'
 };
