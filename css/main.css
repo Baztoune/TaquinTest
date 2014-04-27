@@ -119,3 +119,8 @@ body {
     margin-right: 10px;
     width:280px;
 }
+.hint{
+    line-height: 14px;
+    font-size: 12px;
+    font-style: italic;
+}
