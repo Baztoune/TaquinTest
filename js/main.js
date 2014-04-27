@@ -9,8 +9,14 @@ var getRandomInt = function(min, max) {
 	/*Start game*/
 	game = new Game();
 
-	var button = document.getElementById('shuffle-button');
-	button.addEventListener('click',function(){
+	var playButton = document.getElementById('play-button');
+	playButton.addEventListener('click',function(){
+		game.playerName = document.getElementById('player-name').value;
+		game.init();
+	});
+
+	var shuffleButton = document.getElementById('shuffle-button');
+	shuffleButton.addEventListener('click',function(){
 		game.shuffle();
 	});
 })();

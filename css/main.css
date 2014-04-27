@@ -9,6 +9,12 @@ iframe {
 	border:none;
 }
 
+body {
+    line-height: 50px;
+    font-size: 40px;
+    font-family: "Helvetica Neue",Arial,Helvetica,sans-serif
+}
+
 /*
  * 1 - Utils
  */
@@ -95,4 +101,21 @@ iframe {
 }
 #shuffle-button{
     float:right;
+}
+#welcome {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 500px;
+    height: 100px;
+}
+#player-name {
+    border: none;
+    border-bottom: 1px solid rgb(0, 0, 0);
+    font-size: 40px;   
+    margin-right: 10px;
+    width:280px;
 }

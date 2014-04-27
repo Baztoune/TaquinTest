@@ -4,8 +4,7 @@
 function Game() {
 	this.grid = new Grid(conf.rows, conf.cols);
 	var draggedTile = null;
-
-	this.init();
+	var playerName = null;
 }
 
 /* First call, triggers the grid building */
@@ -44,20 +43,27 @@ Game.prototype.detectGameSolved = function detectGameSolved() {
 	});
 
 	if(solved){
-		alert('We have a winner here! Congrats');
+		alert('We have a winner here! Congrats'+ (game.playerName ? ' ':'') + game.playerName + '!');
 	}
 };
 
 /* build the view from the model */
 Game.prototype.buildView = function buildView() {
-	var cells = this.grid.cells;
+	/* Remove welcome message */
+	var welcome = document.getElementById('welcome');
+	welcome.parentElement.removeChild(welcome);
 
+	/* Show shuffle button */
+	var shuffleButton = document.getElementById('shuffle-button');
+	shuffleButton.style.display = null;
+
+	/* Build grid */
 	var container = document.getElementById('grid-container');
 	var containerStyle = 'width:' + conf.cols * conf.cellWidth + 'px;';
 	container.setAttribute('style',containerStyle);
 
 	var newGrid = document.getElementById('grid');
-	cells.forEach(function(col) {
+	this.grid.cells.forEach(function(col) {
 		var newRow = document.createElement('div');
 		newRow.classList.add('row', 'clearfix');
 		col.forEach(function(cell) {
