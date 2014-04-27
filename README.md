@@ -4,7 +4,7 @@
 - Code https://github.com/Baztoune/TaquinTest/
 - Démo https://baztoune.github.io/TaquinTest/
 
-### Configuration jeu
+### Téléchargement et configuration jeu
 - Télécharger https://github.com/Baztoune/TaquinTest/archive/master.zip
 - Dézip
 - Modifier js/conf.json (le fichier doit respecter le format JSON). Les propriétés accessibles (nombres de colonnes, lignes, largeur de case, liens, etc.) sont déjà présentes et détaillées en tête de fichier
