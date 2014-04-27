@@ -22,8 +22,13 @@
             <!-- Loading polyfills. We need it for IE9 (classlist exist in IE10+) -->
             <script src="js/polyfill_classlist.js"></script>
             <script src="js/polyfill_console.js"></script>
-            <!-- Loading the conf file first, then the main JS file -->
+            <!-- Loading the conf file first -->
             <script src="js/conf.json"></script>
+            <!-- Loading the js files. Each object has its own file, main.js launch the game -->
+            <script src="js/game.js"></script>
+            <script src="js/grid.js"></script>
+            <script src="js/cell.js"></script>
+            <script src="js/tile.js"></script>
             <script src="js/main.js"></script>
         </div>
     </body>
