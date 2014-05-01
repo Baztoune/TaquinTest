@@ -2,7 +2,7 @@
 
 ### Liens
 - Code https://github.com/Baztoune/TaquinTest/
-- Démo https://baztoune.github.io/TaquinTest/
+- Démo http://baztoune.github.io/TaquinTest/
 
 ### Téléchargement et configuration jeu
 - Télécharger https://github.com/Baztoune/TaquinTest/archive/master.zip
